@@ -1,10 +1,21 @@
 import { useEffect, useState } from 'react';
 import './App.css';
+import Pagination from './Components/Pagination';
 import User from './Components/User';
 
 function App() {
   const [users, setUsers] = useState([]);
-
+  
+  //Added after 12:00 AM
+  const [currentPage, setCurrentPage] = useState(1);
+  const size = 5; // if size=10 then no page will be shown except page 1
+  const totalPages = Math.ceil(users.length / size);
+  const currentUsers = users.slice((currentPage - 1) * size, currentPage * size);
+  const handlePaginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  }
+  //Added after 12:00 AM
+ 
   useEffect(()=> {
     fetch('https://jsonplaceholder.typicode.com/users')
     .then(res => res.json())
@@ -22,12 +33,19 @@ function App() {
   return (
     <>
       {
-        users.map(user => 
-          <div key={user?.id}>
-            <User user={user} handleDelete={handleDelete}/>
-          </div>
+        currentUsers.map(user => 
+         <div key={user?.id}>
+           <User user={user} handleDelete={handleDelete}/>
+         </div>
         )
       }
+      {/* Added after 12:00 AM */}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        paginate={handlePaginate}
+      />
+      {/* Added after 12:00 AM */}
     </>
   )
 }
