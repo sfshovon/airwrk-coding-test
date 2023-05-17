@@ -13,8 +13,6 @@ const User = ({ user, handleDelete }) => {
     setEmail2(e.target.email2.value);
   };
 
-  
-
   return (
     <div className="overflow-x-auto">
       <table className="table w-full">
